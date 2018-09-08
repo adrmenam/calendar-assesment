@@ -6,10 +6,11 @@ class InputForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        dateStart: new Date(),
+        dateStart: "",
         nDays: 1,
         countryCode: "US",
-        render: false
+        render: false,
+        flagCalendarChange: false
       };
   
       this.handleDateChange = this.handleDateChange.bind(this);
@@ -23,7 +24,8 @@ class InputForm extends React.Component {
     }
 
     handleDateChange(event) {
-      this.setState({dateStart: event.target.value, render: false});
+      this.setState({dateStart: event.target.value, render: false, flagCalendarChange: true});
+
     }
 
     handleCodeChange(event) {
@@ -31,9 +33,8 @@ class InputForm extends React.Component {
     }
   
     handleSubmit(event) {
-      this.setState({render: true});
-      
-      event.preventDefault();
+        this.setState({render: true});
+        event.preventDefault();
     }
   
     render() {
@@ -82,7 +83,7 @@ class InputForm extends React.Component {
                     </tr>
                     <tr>
                         <td>Number of Days:</td>
-                        <td><input type="number" value={this.state.nDays} onChange={this.handleDaysChange} /></td>
+                        <td><input type="number" min="1" value={this.state.nDays} onChange={this.handleDaysChange} /></td>
                     </tr>
                     <tr>
                         <td>Country Code:</td>
@@ -91,7 +92,7 @@ class InputForm extends React.Component {
                     </tbody>
                 </table>
                 </center>
-                <input  type="submit" value="Render Calendar" />
+                <input disabled={!this.state.flagCalendarChange} type="submit" value="Render Calendar" />
             </form>
           </div>
         );
