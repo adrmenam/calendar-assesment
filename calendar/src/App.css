@@ -26,3 +26,85 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* FONT IMPORTS */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+/* VARIABLES */
+
+:root {
+  --main-color: orange;
+  --text-color: #000;
+  --text-color-light: #ccc;
+  --border-color: #eee;
+  --bg-color: #f9f9f9;
+  --neutral-color: #fff;
+  --weekend-color: yellow;
+  --today-color: orange;
+}
+
+
+/* GENERAL */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text-color);
+    background: var(--bg-color);
+    position: relative;
+}
+
+header {
+  display: block;
+  width: 100%;
+  padding: 1.75em 0;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--neutral-color);
+}
+
+header #title {
+  font-size: 175%;
+  text-align: center;
+  color: var(--main-color);
+  line-height: 1;
+}
+
+main {
+  display: block;
+  margin: 0 auto;
+  margin-top: 2em;
+  max-width: 50em;
+}
+
+input[type=text], select, input[type=number], input[type=date] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 50%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
