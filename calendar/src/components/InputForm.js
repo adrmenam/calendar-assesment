@@ -1,4 +1,5 @@
 import React from "react";
+import Calendar from './Calendar.js'
 
 
 
@@ -63,9 +64,7 @@ class InputForm extends React.Component {
                 <input type="submit" value="Render Calendar" />
             </form>
             <div>
-              <p>{this.state.dateStart}</p>
-              <p>{this.state.nDays}</p>
-              <p>{this.state.countryCode}</p>
+                <Calendar stateParam={this.state}/>
             </div>
           </div>
         );
