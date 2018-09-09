@@ -1,15 +1,20 @@
 import React from "react";
 import dateFns from "date-fns";
 
+var Holidays = require('date-holidays');  
+var hd = new Holidays();
+
 class Calendar extends React.Component {
 
   constructor(props){
     super(props);
     console.log(this.props.stateParam);
+    hd.init(this.props.stateParam.countryCode);
     this.state = {
       dateStart: new Date(this.props.stateParam.dateStart),
       nDays: this.props.stateParam.nDays,
-      countryCode: this.props.stateParam.countryCode
+      countryCode: this.props.stateParam.countryCode,
+      holidays: hd.getHolidays()
       // dateStart: new Date(),
       // nDays: 40,
       // countryCode: "US"
@@ -146,6 +151,8 @@ class Calendar extends React.Component {
                   ? "disabled"
                   : dateFns.isToday(day) 
                   ? "selected" 
+                  : hd.isHoliday(day)
+                  ? "holiday" 
                   : dateFns.isWeekend(day) //Weekend color
                   ? "weekend" : ""
                   

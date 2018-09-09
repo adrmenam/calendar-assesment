@@ -224,6 +224,12 @@ input[type=submit]:disabled {
   background-color: yellow;
 }
 
+.calendar .body .holiday {
+  color: var(--text-color);
+  pointer-events: none;
+  background-color: purple;
+}
+
 .calendar .body .col {
   flex-grow: 0;
   flex-basis: calc(100%/7);
