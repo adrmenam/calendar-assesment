@@ -1,5 +1,6 @@
 import React from "react";
 import dateFns from "date-fns";
+import format from 'date-fns/format';
 
 var Holidays = require('date-holidays');  
 var hd = new Holidays();
@@ -10,8 +11,9 @@ class Calendar extends React.Component {
     super(props);
     console.log(this.props.stateParam);
     hd.init(this.props.stateParam.countryCode);
+    
     this.state = {
-      dateStart: new Date(this.props.stateParam.dateStart),
+      dateStart: dateFns.parse(this.props.stateParam.dateStart),
       nDays: this.props.stateParam.nDays,
       countryCode: this.props.stateParam.countryCode,
       holidays: hd.getHolidays()
@@ -19,12 +21,14 @@ class Calendar extends React.Component {
       // nDays: 40,
       // countryCode: "US"
     };
+    console.log(this.state);
   }
 
   
   componentWillReceiveProps(){
+    let start = dateFns.parse(this.props.stateParam.dateStart);
     this.setState({
-      dateStart: new Date(this.props.stateParam.dateStart),
+      dateStart: start,
       nDays: this.props.stateParam.nDays,
       countryCode: this.props.stateParam.countryCode
     });
@@ -33,11 +37,12 @@ class Calendar extends React.Component {
 
   countMonths(){
     const { dateStart, nDays } = this.state;
-    const endDate = dateFns.addDays(dateStart,nDays);
+    const endDate = this.getEndDate();
     let day = dateStart;
     let months = 1;
+    
     while(day <= endDate){
-      if (dateFns.isLastDayOfMonth(dateFns.subDays(day,1))){
+      if (dateFns.isLastDayOfMonth(day) && day < endDate){
         months+=1;
       }
       day = dateFns.addDays(day, 1);
@@ -49,7 +54,9 @@ class Calendar extends React.Component {
 
   getEndDate(){
     const { dateStart, nDays } = this.state;
-    const endDate = dateFns.addDays(dateStart,nDays);
+
+    //Add nDays minus 1 because I want to show nDays including dateStart
+    const endDate = dateFns.addDays(dateStart,nDays-1); 
     return endDate;
   }
 
@@ -87,59 +94,37 @@ class Calendar extends React.Component {
     console.log(dateStart);
     console.log(dateEnd);
 
-    let monthStart;
-    let monthEnd;
-    let startDate;
-    let endDate;
-    let day;
+    let monthStart = dateFns.startOfWeek(dateStart);;
+    let day = monthStart;
     let lastday;
 
     const dateFormat = "D";
     let formattedDate = "";
     const rows = [];
     let days = [];
-    
 
-    
-
-    if(dateStart === this.state.dateStart){ //first month && only mon
-       monthStart = dateFns.startOfWeek(dateStart);
-       monthEnd = dateFns.endOfMonth(monthStart);
-       startDate = dateFns.startOfWeek(monthStart);
-       endDate = dateFns.endOfWeek(monthEnd);
-       day = startDate;
+    if(dateStart === this.state.dateStart){ //first month
+        console.log("got into first month");     
       if(this.countMonths()===1){ //only month
+        console.log("got into first and only month");
          lastday = dateFns.endOfWeek(dateEnd);
       }else{
-         lastday = dateFns.endOfWeek(endDate);
-      }
-      
+        console.log("got into first month in multiple months");
+         lastday = dateFns.endOfMonth(dateStart);
+      }   
     }
     else if(dateFns.isSameMonth(dateStart,dateEnd)){ //last month
-       monthStart = dateFns.startOfMonth(dateStart);
-       monthEnd = dateFns.endOfMonth(monthStart);
-       startDate = dateFns.startOfWeek(monthStart);
-       endDate = dateFns.endOfWeek(monthEnd);
-       day = startDate;
-       lastday = dateFns.endOfWeek(dateEnd)
-
+        console.log("got into last month");
+       lastday = dateFns.endOfWeek(dateEnd);
     }
     else{ //middle months
-       monthStart = dateFns.startOfMonth(dateStart);
-       monthEnd = dateFns.endOfMonth(monthStart);
-       startDate = dateFns.startOfWeek(monthStart);
-       endDate = dateFns.endOfWeek(monthEnd);
-       day = startDate;
-       lastday = endDate;
+        console.log("got into middle month");
+       lastday = dateFns.endOfMonth(dateStart);
     }
-
-    
       
-      console.log("endDate: "+lastday);
+      console.log("lastday: "+lastday);
       while (day <= lastday) {
-        if(dateFns.isToday(day)){
-          console.log("Today:"+day);
-        }
+        
         for (let i = 0; i < 7; i++) {
           formattedDate = dateFns.format(day, dateFormat);
           
@@ -177,24 +162,15 @@ class Calendar extends React.Component {
     return <div className="body">{rows}</div>;
   }
   
-  nextMonth = () => {
-    this.setState({
-      startDate: dateFns.addMonths(this.state.startDate, 1)
-    });
-  }
-  prevMonth = () => {
-    this.setState({
-      startDate: dateFns.subMonths(this.state.startDate, 1)
-    });
-  }
+  
 
   render() {
     let months = [];
 
-    let nMonths = this.countMonths();
-
     let start = this.state.dateStart;
     let end = this.getEndDate();
+
+    let nMonths = this.countMonths();
 
     console.log(start+" "+end);
     

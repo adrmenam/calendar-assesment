@@ -225,7 +225,7 @@ input[type=submit]:disabled {
 }
 
 .calendar .body .holiday {
-  color: var(--text-color);
+  color: white;
   pointer-events: none;
   background-color: purple;
 }

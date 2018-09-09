@@ -7,7 +7,7 @@ class InputForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        dateStart: "",
+        dateStart: new Date(),
         nDays: 1,
         countryCode: "US",
         render: false,
